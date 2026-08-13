@@ -61,7 +61,8 @@
   .pill b{color:var(--ink);}
   .pill.active{border-color:var(--accent);color:var(--ink);background:var(--accent-soft);}
   .pill:hover{color:var(--ink);border-color:#C4CAD2;}
-  .export-grp{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:auto;}
+  .export-grp{display:flex;align-items:center;gap:8px;flex:0 1 auto;min-width:0;margin-left:auto;flex-wrap:wrap;justify-content:flex-end;row-gap:6px;}
+  #btnExport{order:-1;}
   .export-grp select{white-space:nowrap;flex-shrink:0;
     background:var(--panel-2);color:var(--ink);border:1px solid var(--line);
     border-radius:8px;padding:8px 9px;font-size:12.5px;
@@ -276,7 +277,7 @@
     .brand small{display:none;}
     .topbar .spacer{display:none;}
     .size-pills{order:3;width:100%;justify-content:flex-start;}
-    .export-grp{margin-left:auto;}
+    .export-grp{order:4;width:100%;margin-left:0;justify-content:flex-end;}
     .pill{padding:6px 9px;font-size:11.5px;}
     .pill b{display:none;}
     .btn-primary{white-space:nowrap;}
@@ -399,8 +400,8 @@
     <div class="spacer"></div>
     <div class="export-grp">
       <button class="btn-ghost" id="btnMyTpl" title="自分で作ったデザインをテンプレとして保存・呼び出し">★ マイテンプレ</button>
-      <button class="btn-ghost" id="btnSaveJson" title="デザインをJSONで保存（テンプレとして再利用）">保存</button>
-      <button class="btn-ghost" id="btnLoadJson" title="保存したJSONを読み込み">読込</button>
+      <button class="btn-ghost" id="btnSaveJson" title="作業データ(JSON)を保存。あとで読み込んで編集を再開できます">⛭ 作業データ</button>
+      <button class="btn-ghost" id="btnLoadJson" title="保存した作業データ(JSON)を読み込み">⛭ 読込</button>
       <input type="file" id="fileJson" accept="application/json,.json" hidden>
       <span style="width:1px;height:22px;background:var(--line);margin:0 2px"></span>
       <select id="exScale" title="書き出し倍率">
@@ -412,7 +413,7 @@
         <option value="png">PNG</option>
         <option value="jpg">JPG</option>
       </select>
-      <button class="btn-primary" id="btnExport">⤓ 画像を保存</button>
+      <button class="btn-primary" id="btnExport" title="PNG / JPG 画像としてダウンロード">⤓ 画像を書き出す</button>
     </div>
   </div>
 
@@ -428,7 +429,7 @@
           <select id="exFmtM"><option value="png">PNG</option><option value="jpg">JPG</option></select>
         </div>
         <div class="row2" style="margin-top:8px">
-          <button class="mini-btn" id="btnSaveJsonM">デザイン保存</button>
+          <button class="mini-btn" id="btnSaveJsonM">⛭ 作業データ</button>
           <button class="mini-btn" id="btnLoadJsonM">読込</button>
         </div>
         <button class="btn-block solid" id="btnMyTplM" style="margin-top:8px">★ マイテンプレ</button>
@@ -2125,7 +2126,7 @@ async function exportImage(){
   if(blob){
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
-    a.href=url; a.download=`note-thumbnail.${fmt}`;
+    a.href=url; a.download=exportFileName(fmt);
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(()=>URL.revokeObjectURL(url), 5000);
   }else{
@@ -2140,6 +2141,10 @@ async function exportImage(){
   }finally{
     btn.textContent=oldLabel; btn.disabled=false;
   }
+}
+function exportFileName(fmt){
+  const d=new Date(), p=(n)=>String(n).padStart(2,'0');
+  return `thumb_${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}.${fmt}`;
 }
 function drawCover(ctx,img,x,y,w,h){
   const base=Math.max(w/img.naturalWidth,h/img.naturalHeight);
