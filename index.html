@@ -63,9 +63,9 @@
   .pill:hover{color:var(--ink);border-color:#C4CAD2;}
   .export-grp{display:flex;align-items:center;gap:8px;flex:0 1 auto;min-width:0;margin-left:auto;flex-wrap:wrap;justify-content:flex-end;row-gap:6px;}
   #btnExport{order:-1;}
-  .export-grp select{white-space:nowrap;flex-shrink:0;
+  .export-grp select{white-space:nowrap;flex:0 0 auto;width:auto;
     background:var(--panel-2);color:var(--ink);border:1px solid var(--line);
-    border-radius:8px;padding:8px 9px;font-size:12.5px;
+    border-radius:8px;padding:7px 8px;font-size:12px;
   }
   .btn-primary{
     background:var(--accent);color:#fff;border:none;font-weight:900;
@@ -277,7 +277,9 @@
     .brand small{display:none;}
     .topbar .spacer{display:none;}
     .size-pills{order:3;width:100%;justify-content:flex-start;}
-    .export-grp{order:4;width:100%;margin-left:0;justify-content:flex-end;}
+    .export-grp{margin-left:auto;justify-content:flex-end;}
+    .export-grp .btn-ghost{padding:7px 9px;font-size:12px;}
+    .btn-primary{padding:8px 12px;font-size:12.5px;}
     .pill{padding:6px 9px;font-size:11.5px;}
     .pill b{display:none;}
     .btn-primary{white-space:nowrap;}
